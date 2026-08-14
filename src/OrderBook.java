@@ -11,7 +11,17 @@ public class OrderBook {
        this.asks = new PriorityQueue<Order> asks = new PriorityQueue<>((o1, o2) -> Double.compare(o1.price, o2.price));
        this.bids = new PriorityQueue<Order> bids = new PriorityQueue<>((o1, o2) -> Double.compare(o2.price, o1.price));
 
+   }
 
+   public void addOrder (Order order) {
+
+       orders.put(Order.orderId, order);
+
+       if (order.side.equalsIgnoreCase("BUY")) {
+           bids.add(order);
+       } else {
+           asks.add(order);
+       }
 
    }
 
