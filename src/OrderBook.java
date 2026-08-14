@@ -22,7 +22,20 @@ public class OrderBook {
        } else {
            asks.add(order);
        }
-
    }
 
-}
+
+       public void matchOrders() {
+
+
+           while (!bids.isEmpty() && !asks.isEmpty() && bids.peek().price >= agit sks.peek().price) {
+               Order bestBid = bids.peek();
+               Order bestAsk = asks.peek();
+
+               system.out.println("MATCH");
+           }
+           system.out.println("NO MATCH");
+
+   }
+   }
+
