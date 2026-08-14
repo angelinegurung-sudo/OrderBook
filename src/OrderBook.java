@@ -8,14 +8,14 @@ public class OrderBook {
 
    public OrderBook() {
        this.orders = new HashMap<>();
-       this.asks = new PriorityQueue<Order> asks = new PriorityQueue<>((o1, o2) -> Double.compare(o1.price, o2.price));
-       this.bids = new PriorityQueue<Order> bids = new PriorityQueue<>((o1, o2) -> Double.compare(o2.price, o1.price));
+       this.asks = new PriorityQueue<>((o1, o2) -> Double.compare(o1.price, o2.price));
+       this.bids = new PriorityQueue<>((o1, o2) -> Double.compare(o2.price, o1.price));
 
    }
 
    public void addOrder (Order order) {
 
-       orders.put(Order.orderId, order);
+       orders.put(order.orderId, order);
 
        if (order.side.equalsIgnoreCase("BUY")) {
            bids.add(order);
@@ -26,15 +26,27 @@ public class OrderBook {
 
 
        public void matchOrders() {
-
-
-           while (!bids.isEmpty() && !asks.isEmpty() && bids.peek().price >= agit sks.peek().price) {
+           while (!bids.isEmpty() && !asks.isEmpty() && bids.peek().price >= asks.peek().price) {
                Order bestBid = bids.peek();
                Order bestAsk = asks.peek();
 
-               system.out.println("MATCH");
+              int tradedQty = Math.min(bestBid.quantity, bestAsk.quantity);
+              bestBid.quantity -= tradedQty;
+              bestAsk.quantity -= tradedQty;
+
+              if (bestBid.quantity == 0) {
+                  bids.poll();
+                  orders.remove(bestBid.orderId);
+              } if (bestAsk.quantity == 0) {
+                  asks.poll();
+                  orders.remove(bestAsk.orderId);
+
+              }
+
+
+               System.out.println("MATCH: Traded " + tradedQty + "shares at price: " + bestAsk.price);
            }
-           system.out.println("NO MATCH");
+           System.out.println("NO MATCH AT THE MOMENT");
 
    }
    }
