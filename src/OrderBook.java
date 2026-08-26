@@ -26,28 +26,35 @@ public class OrderBook {
 
 
        public void matchOrders() {
+
+           boolean tradeHappened = false;
+
            while (!bids.isEmpty() && !asks.isEmpty() && bids.peek().price >= asks.peek().price) {
+
+               tradeHappened = true;
                Order bestBid = bids.peek();
                Order bestAsk = asks.peek();
 
-              int tradedQty = Math.min(bestBid.quantity, bestAsk.quantity);
-              bestBid.quantity -= tradedQty;
-              bestAsk.quantity -= tradedQty;
+               int tradedQty = Math.min(bestBid.quantity, bestAsk.quantity);
+               bestBid.quantity -= tradedQty;
+               bestAsk.quantity -= tradedQty;
 
-              if (bestBid.quantity == 0) {
-                  bids.poll();
-                  orders.remove(bestBid.orderId);
-              } if (bestAsk.quantity == 0) {
-                  asks.poll();
-                  orders.remove(bestAsk.orderId);
+               if (bestBid.quantity == 0) {
+                   bids.poll();
+                   orders.remove(bestBid.orderId);
+               }
+               if (bestAsk.quantity == 0) {
+                   asks.poll();
+                   orders.remove(bestAsk.orderId);
 
-              }
+               }
 
 
                System.out.println("MATCH: Traded " + tradedQty + "shares at price: " + bestAsk.price);
            }
-           System.out.println("NO MATCH AT THE MOMENT");
-
+           if (!tradeHappened) {
+               System.out.println("NO MATCH AT THE MOMENT");
+       }
    }
    }
 
