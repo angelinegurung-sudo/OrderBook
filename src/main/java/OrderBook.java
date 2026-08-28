@@ -1,3 +1,5 @@
+package main.java;
+
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -22,6 +24,10 @@ public class OrderBook {
        } else {
            asks.add(order);
        }
+   }
+
+   public boolean hasOrder(String orderId) {
+       return orders.containsKey(orderId);
    }
 
 
@@ -56,5 +62,7 @@ public class OrderBook {
                System.out.println("NO MATCH AT THE MOMENT");
        }
    }
+
+
    }
 
