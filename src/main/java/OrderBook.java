@@ -1,4 +1,3 @@
-package main.java;
 
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -27,6 +26,7 @@ public class OrderBook {
    }
 
    public boolean hasOrder(String orderId) {
+
        return orders.containsKey(orderId);
    }
 
