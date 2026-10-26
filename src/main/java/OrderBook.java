@@ -6,17 +6,34 @@ public class OrderBook {
    private HashMap<String, Order> orders;
    private PriorityQueue<Order> asks;
    private PriorityQueue<Order> bids;
+   private long counter;
 
    public OrderBook() {
        this.orders = new HashMap<>();
-       this.asks = new PriorityQueue<>((o1, o2) -> Double.compare(o1.price, o2.price));
-       this.bids = new PriorityQueue<>((o1, o2) -> Double.compare(o2.price, o1.price));
-
+       this.asks = new PriorityQueue<>((o1, o2) -> {
+           int result = Double.compare(o1.price, o2.price);
+           if (result != 0) {
+               return result;
+           } else {
+               return Long.compare(o1.arrivalOrder, o2.arrivalOrder);
+           }
+       });
+       this.bids = new PriorityQueue<>((o1, o2) -> {
+           int result = Double.compare(o2.price, o1.price);
+           if ( result != 0 ) {
+               return result;
+           } else {
+               return Long.compare(o1.arrivalOrder, o2.arrivalOrder);
+           }
+       });
    }
 
    public void addOrder (Order order) {
 
        orders.put(order.orderId, order);
+
+       order.arrivalOrder = counter;
+       counter++;
 
        if (order.side.equalsIgnoreCase("BUY")) {
            bids.add(order);

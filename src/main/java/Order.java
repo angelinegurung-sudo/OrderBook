@@ -5,6 +5,7 @@ public class Order {
     String orderId;
     Double price;
     int quantity;
+    long arrivalOrder;
 
     public Order(String side, String orderId, Double price, int quantity) {
         this.side = side;
