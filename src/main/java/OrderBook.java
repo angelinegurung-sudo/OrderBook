@@ -30,18 +30,51 @@ public class OrderBook {
 
    public void addOrder (Order order) {
 
-       orders.put(order.orderId, order);
+       if (order.orderType == OrderType.MARKET) {
 
-       order.arrivalOrder = counter;
-       counter++;
+           if (order.side.equalsIgnoreCase("BUY")) {
 
-       if (order.side.equalsIgnoreCase("BUY")) {
-           bids.add(order);
+               while ( order.quantity != 0 && !asks.isEmpty() ) {
+                   Order bestAsk = asks.peek();
+                   int tradedQty = Math.min(order.quantity, bestAsk.quantity);
+
+
+                   order.quantity -= tradedQty;
+                   bestAsk.quantity -= tradedQty;
+
+                   if (bestAsk.quantity == 0 ) {
+                       asks.poll();
+                       orders.remove(bestAsk.orderId);
+                   }
+               }
+           } else {
+               while ( order.quantity != 0 && !bids.isEmpty() ) {
+                   Order bestBids = bids.peek();
+                   int tradedQty = Math.min(order.quantity, bestBids.quantity);
+
+                   order.quantity -= tradedQty;
+                   bestBids.quantity -= tradedQty;
+
+                   if (bestBids.quantity == 0 ) {
+                       bids.poll();
+                       orders.remove(bestBids.orderId);
+                   }
+               }
+
+           }
        } else {
-           asks.add(order);
+           orders.put(order.orderId, order);
+
+           order.arrivalOrder = counter;
+           counter++;
+
+           if (order.side.equalsIgnoreCase("BUY")) {
+               bids.add(order);
+           } else {
+               asks.add(order);
+           }
        }
    }
-
    public boolean hasOrder(String orderId) {
 
        return orders.containsKey(orderId);
