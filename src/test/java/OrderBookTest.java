@@ -58,7 +58,7 @@ public class OrderBookTest {
       assertTrue(orderBook.hasOrder("orderId40.0")); //note to self the double 40.00 turns to 40.0 into strings/text
       assertFalse(orderBook.hasOrder("orderId26.0"));
       assertFalse(orderBook.hasOrder("orderId22.0"));
-      assertEquals(0, marketBuy.quantity);
+      assertEquals(0, marketBuy.getQuantity());
 
 
   }

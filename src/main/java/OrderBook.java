@@ -34,28 +34,28 @@ public class OrderBook {
 
            if (order.side.equalsIgnoreCase("BUY")) {
 
-               while ( order.quantity != 0 && !asks.isEmpty() ) {
+               while ( order.getQuantity() != 0 && !asks.isEmpty() ) {
                    Order bestAsk = asks.peek();
-                   int tradedQty = Math.min(order.quantity, bestAsk.quantity);
+                   int tradedQty = Math.min(order.getQuantity(), bestAsk.getQuantity());
 
 
-                   order.quantity -= tradedQty;
-                   bestAsk.quantity -= tradedQty;
+                   order.reduceQuantity(tradedQty);
+                   bestAsk.reduceQuantity(tradedQty);
 
-                   if (bestAsk.quantity == 0 ) {
+                   if (bestAsk.getQuantity() == 0 ) {
                        asks.poll();
                        orders.remove(bestAsk.orderId);
                    }
                }
            } else {
-               while ( order.quantity != 0 && !bids.isEmpty() ) {
+               while ( order.getQuantity() != 0 && !bids.isEmpty() ) {
                    Order bestBids = bids.peek();
-                   int tradedQty = Math.min(order.quantity, bestBids.quantity);
+                   int tradedQty = Math.min(order.getQuantity(), bestBids.getQuantity());
 
-                   order.quantity -= tradedQty;
-                   bestBids.quantity -= tradedQty;
+                   order.reduceQuantity(tradedQty);
+                   bestBids.reduceQuantity(tradedQty);
 
-                   if (bestBids.quantity == 0 ) {
+                   if (bestBids.getQuantity() == 0 ) {
                        bids.poll();
                        orders.remove(bestBids.orderId);
                    }
@@ -91,15 +91,15 @@ public class OrderBook {
                Order bestBid = bids.peek();
                Order bestAsk = asks.peek();
 
-               int tradedQty = Math.min(bestBid.quantity, bestAsk.quantity);
-               bestBid.quantity -= tradedQty;
-               bestAsk.quantity -= tradedQty;
+               int tradedQty = Math.min(bestBid.getQuantity(), bestAsk.getQuantity());
+               bestBid.reduceQuantity(tradedQty);
+               bestAsk.reduceQuantity(tradedQty);
 
-               if (bestBid.quantity == 0) {
+               if (bestBid.getQuantity() == 0) {
                    bids.poll();
                    orders.remove(bestBid.orderId);
                }
-               if (bestAsk.quantity == 0) {
+               if (bestAsk.getQuantity() == 0) {
                    asks.poll();
                    orders.remove(bestAsk.orderId);
 

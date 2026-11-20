@@ -4,7 +4,7 @@ public class Order {
     String side;
     String orderId;
     Double price;
-    int quantity;
+    private int quantity;
     long arrivalOrder;
     OrderType orderType;
 
@@ -15,5 +15,13 @@ public class Order {
         this.quantity = quantity;
         this.orderType = orderType;
 
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void reduceQuantity(int amount) {
+        quantity -= amount;
     }
 }
